@@ -52,14 +52,13 @@ const userSchema = new mongoose.Schema(
   },
 );
 
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
   this.password = await bycrypt.hash(this.password, 10);
-  next();
 });
 
 userSchema.methods.comparePassword = async function (candidatePassword) {
-  return await bycrypt.compare(this.password, candidatePassword);
+  return await bycrypt.compare(candidatePassword, this.password);
 };
 const userModel = mongoose.model("User", userSchema);
 export default userModel;

@@ -1,11 +1,8 @@
 import mongoose from "mongoose";
-import asyncHandler from "../utils/asyncHandler.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 const connectDb = asyncHandler(async () => {
-  const connect = await mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  const connect = await mongoose.connect(process.env.MONGO_URI);
   console.log("MongoDB connected successfully");
 });
 

@@ -18,3 +18,5 @@ router.get("/", getUserTodo);
 router.get("/:id", checkOwnership, getTodo);
 router.patch("/:id", checkOwnership, updateTodo);
 router.delete("/:id", checkOwnership, deleteTodo);
+
+export default router;

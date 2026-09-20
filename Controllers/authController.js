@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/userSchema.js";
-import asyncHandler from "../utils/asyncHandler.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 
 const generateAccessToken = (id) => {

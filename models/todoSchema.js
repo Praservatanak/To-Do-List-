@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 const subTaskSchema = new mongoose.Schema({
   title: {
     type: String,

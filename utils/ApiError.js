@@ -8,7 +8,7 @@ class ApiError extends Error {
   static badRequest(msg = "Bad Request") {
     return new ApiError(400, msg);
   }
-  static unauthurized(msg = "Not authenticated") {
+  static unauthorized(msg = "Not authenticated") {
     return new ApiError(401, msg);
   }
   static forbidden(msg = "Forbidden! Cannot access") {

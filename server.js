@@ -1,15 +1,20 @@
 import express from "express";
-import ConnectDb from "./config/db.js";
+import dns from "dns";
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
+
+import { connectDb } from "./config/db.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoute.js";
+import userRoutes from "./routes/userRoute.js";
+import todoRoutes from "./routes/todoRoute.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 dotenv.config();
-ConnectDb();
+const app = express();
+connectDb();
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const app = express();
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
