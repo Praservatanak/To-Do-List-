@@ -1,51 +1,43 @@
-import ApiError from "../utils/ApiError";
+import ApiError from "../utils/ApiError.js";
 
 const errorHandler = (err, req, res, next) => {
   let error = err;
-  error.statusCode = err.statusCode || 500;
-  error.stack = err.stack;
   error.message = err.message;
+  error.stack = err.stack;
+  error.statusCode = err.statusCode;
 
-  console.log(err);
+  console.error(err);
+
   if (err.name == "CastError") {
-    error = new ApiError(404, "Resource not found");
+    const message = "Resource not found";
+    error = new ApiError(404, message);
   }
-  if (err.name === "ValidationError") {
+  if (err.name == "ValidationError") {
     const message = Object.values(err.errors).map((e) => e.message);
-    error = new ApiError(400, message);
-  }
-  if (err.name === "JsonWebTokenError") {
-    message = "JWT provided invalid";
     error = new ApiError(401, message);
   }
-  if (err.name === "TokenExpiredError") {
-    message = "Token expired";
+  if (err.name == "JsonWebTokenError") {
+    const message = "Invalid token";
     error = new ApiError(401, message);
   }
-  if (err.code === 11000) {
-    message = "Duplicated field value entered";
+  if (err.name == "TokenExpiredError") {
+    const message = "Token expired";
+    error = new ApiError(401, message);
+  }
+  if (err.code == 11000) {
+    const message = "Duplicated field value entered";
     error = new ApiError(400, message);
-  }
-  if (err.name === "VersionError") {
-    error = new ApiError(409, "Document was modified, please try again");
-  }
-
-  if (err.name === "MongoNetworkError") {
-    error = new ApiError(503, "Database connection failed");
-  }
-
-  if (err.name === "StrictModeError") {
-    error = new ApiError(400, "Invalid field in request");
   }
   if (err.code === "ECONNREFUSED") {
-    error = new ApiError(503, "External service unavailable");
+    const message = "External server not connected";
+    error = new ApiError(502, message);
   }
-  if (err.code === "ETIMEDOUT") {
-    error = new ApiError(504, "Request timed out");
-  }
-  if (err.name === "TooManyRequestsError") {
-    error = new ApiError(429, "Too many requests, please try again later");
-  }
+
+  res.status(error.statusCode || 500).json({
+    success: false,
+    message: error.message || "Internal server error",
+    ...(process.env.NODE_ENV == "development" && { stack: err.stack }),
+  });
 };
 
 export { errorHandler };
