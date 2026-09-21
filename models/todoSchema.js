@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 const subTaskSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -62,5 +63,5 @@ todoSchema.methods.toggleCompleted = function () {
 todoSchema.virtual("subTaskCount").get(function () {
   return this.subTasks.length;
 });
-
+todoSchema.plugin(mongoosePaginate);
 export default mongoose.model("Todo", todoSchema);

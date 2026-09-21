@@ -1,7 +1,9 @@
 import express from "express";
+import dns from "node:dns";
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
 import helmet from "helmet";
 import cors from "cors";
-import mongoSanitize from "express-mongo-sanitize";
+import mongoSanitize from "@exortek/express-mongo-sanitize";
 import hpp from "hpp";
 import { apiLimiter } from "./middlewares/rateLimit.js";
 import { connectDb } from "./config/db.js";

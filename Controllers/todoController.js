@@ -61,7 +61,42 @@ export const getUserTodo = asyncHandler(async (req, res) => {
 });
 
 export const getAllTodo = asyncHandler(async (req, res) => {
-  const todos = await Todo.find();
+  const { sort } = req.query;
+  const limit = parseInt(req.query.limit) || 10;
+  const page = parseInt(req.query.page) || 1;
+  if (page <= 0) {
+    return res.status(400).json({
+      success: false,
+      error: "Page must be greater than 0",
+    });
+  }
+
+  if (limit < 1 || limit > 100) {
+    return res.status(400).json({
+      success: false,
+      error: "Limit must be between 1 and 100",
+    });
+  }
+  const todos = await Todo.paginate(
+    {},
+    {
+      limit,
+      page,
+      sort: sort || "-createdAt",
+      customLabels: {
+        docs: "todos",
+        totalDocs: "total",
+        limit: "perPage",
+        page: "currentPage",
+        nextPage: "next",
+        prevPage: "prev",
+        totalPages: "pages",
+        pagingCounter: "serialNo",
+        meta: "pagination",
+      },
+    },
+  );
+
   res.status(200).json({
     success: true,
     data: todos,

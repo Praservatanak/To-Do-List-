@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 import bycrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
@@ -60,5 +61,6 @@ userSchema.pre("save", async function () {
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return await bycrypt.compare(candidatePassword, this.password);
 };
+userSchema.plugin(mongoosePaginate);
 const userModel = mongoose.model("User", userSchema);
 export default userModel;
