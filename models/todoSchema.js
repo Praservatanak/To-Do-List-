@@ -14,8 +14,8 @@ const subTaskSchema = new mongoose.Schema({
   },
   priorityLevel: {
     type: String,
-    enum: ["Low", "Medium", "High"],
-    default: "Medium",
+    enum: ["low", "medium", "high"],
+    default: "medium",
   },
 });
 
@@ -38,8 +38,8 @@ const todoSchema = new mongoose.Schema(
     },
     priorityLevel: {
       type: String,
-      enum: ["Low", "Medium", "High"],
-      default: "Medium",
+      enum: ["low", "medium", "high"],
+      default: "medium",
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
