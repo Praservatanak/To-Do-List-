@@ -83,6 +83,7 @@ export const getAllTodo = asyncHandler(async (req, res) => {
       limit,
       page,
       sort: sort || "-createdAt",
+      populate: { path: "user", select: "name email" },
       customLabels: {
         docs: "todos",
         totalDocs: "total",

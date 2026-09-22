@@ -77,3 +77,67 @@ export const getAllUser = asyncHandler(async (req, res) => {
     data: result,
   });
 });
+
+export const getOneUser = asyncHandler(async (req, res) => {
+  const userId = req.params.id;
+  const user = await User.findById(userId);
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+  res.status(200).json({
+    success: true,
+    data: user,
+  });
+});
+
+export const updateOneUser = asyncHandler(async (req, res) => {
+  const userId = req.params.id;
+  if (req.body.password) {
+    throw ApiError.badRequest(
+      "Cannot change password in this route. Use /api/auth/password-change",
+    );
+  }
+  const allowField = ["name", "age", "role"];
+  const update = {};
+  allowField.forEach((f) => {
+    if (req.body[f] !== undefined) {
+      update[f] = req.body[f];
+    }
+  });
+  const user = await User.findByIdAndUpdate(userId, update, {
+    new: true,
+    runValidators: true,
+  });
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+  res.status(200).json({
+    success: true,
+    data: user,
+  });
+});
+
+export const deleteOneUser = asyncHandler(async (req, res) => {
+  const userId = req.params.id;
+  if (req.user._id.equals(userId)) {
+    throw ApiError.badRequest("Cannot delete your own account");
+  }
+  const user = await User.findByIdAndDelete(userId);
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+  res.status(200).json({
+    success: true,
+    data: null,
+  });
+});
