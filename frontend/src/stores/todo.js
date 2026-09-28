@@ -29,6 +29,9 @@ export const useTodoStore = defineStore('todo', {
   },
 
   actions: {
+    setFilter(value) {
+      this.filter = value
+    },
     async fetchTodo() {
       try {
         const response = await api.get('/todos')

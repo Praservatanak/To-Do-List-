@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import homeView from '@/views/homeView.vue'
-import loginView from '@/views/loginView.vue'
-import registerView from '@/views/registerView.vue'
-import todoView from '@/views/todoView.vue'
-import userView from '@/views/userView.vue'
-import notFoundView from '@/views/notFoundView.vue'
+import homeView from '../views/homeView.vue'
+import aboutView from '../views/aboutView.vue'
+import loginView from '../views/loginView.vue'
+import registerView from '../views/registerView.vue'
+import todoView from '../views/todoView.vue'
+import userView from '../views/userView.vue'
+import notFoundView from '../views/notFoundView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,6 +14,12 @@ const router = createRouter({
       path: '/',
       name: 'HomeView',
       component: homeView,
+      meta: { requiresAuth: false },
+    },
+    {
+      path: '/about',
+      name: 'AboutView',
+      component: aboutView,
       meta: { requiresAuth: false },
     },
     {
@@ -34,7 +41,7 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: '/user',
+      path: '/user/:id',
       name: 'UserView',
       component: userView,
       meta: { requiresAuth: true },
