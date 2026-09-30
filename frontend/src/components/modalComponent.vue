@@ -51,12 +51,12 @@ async function handleSave() {
     }
     emit('close')
   } catch (err) {
-    const data = err.response?.data
+    const errors = err.response?.data?.errors
 
-    if (data?.errors?.dueDate) {
-      errorMessage.value = data.errors.dueDate
+    if (errors?.length) {
+      errorMessage.value = errors.map((error) => error.message).join(', ')
     } else {
-      errorMessage.value = data?.message || err.message
+      errorMessage.value = err.response?.data?.message || err.message
     }
   } finally {
     isSaving.value = false
