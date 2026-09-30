@@ -16,9 +16,10 @@ import {
 } from "../validators/todoValidator.js";
 const router = express.Router();
 router.use(protect);
-router.get("/all", authorization("admin"), getAllTodo);
 router.post("/", createTodoValidator, createTodo);
 router.get("/", getUserTodo);
+router.get("/all", authorization("admin"), getAllTodo);
+
 router.get("/:id", checkOwnership, getTodo);
 router.patch("/:id", checkOwnership, updateTodoValidator, updateTodo);
 router.delete("/:id", checkOwnership, deleteTodo);

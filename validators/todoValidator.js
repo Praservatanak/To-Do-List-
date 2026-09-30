@@ -91,12 +91,6 @@ export const updateTodoValidator = [
     .isIn(["low", "medium", "high"])
     .withMessage("Priority must be low, medium, or high"),
 
-  body("user")
-    .optional()
-
-    .isMongoId()
-    .withMessage("User must be a valid MongoDB ID"),
-
   body("subTasks")
     .optional()
     .isArray()

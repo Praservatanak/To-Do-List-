@@ -50,7 +50,13 @@ export const login = asyncHandler(async (req, res) => {
   res.json({
     success: true,
     accessToken,
-    user: { id: user._id, name: user.name, email: user.email, role: user.role },
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      createdAt: user.timestamp,
+    },
   });
 });
 
@@ -81,6 +87,7 @@ export const register = asyncHandler(async (req, res) => {
       age: user.age,
       email: user.email,
       role: user.role,
+      createdAt: user.timestamp,
     },
   });
 });
@@ -114,6 +121,6 @@ export const refresh = asyncHandler(async (req, res) => {
   res.json({
     success: true,
     accessToken,
-    messgae: "New access token created",
+    message: "New access token created",
   });
 });
