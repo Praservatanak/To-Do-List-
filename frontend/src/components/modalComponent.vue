@@ -51,10 +51,7 @@ async function handleSave() {
     }
     emit('close')
   } catch (err) {
-    console.error('Save failed:', err.response?.status, err.response?.data, err.message)
-    errorMessage.value =
-      err.response?.data?.message ||
-      (err.request ? 'Cannot reach the server. Please try again.' : 'Failed to save')
+    errorMessage.value = JSON.stringify(err.response?.data) || err.message
   } finally {
     isSaving.value = false
   }
