@@ -13,7 +13,10 @@ function handleLogout() {
 
 <template>
   <nav class="app-nav">
-    <RouterLink to="/" class="logo">Todo</RouterLink>
+    <RouterLink to="/" class="logo">
+      <i class="fa-solid fa-calendar-check" style="color: rgb(116, 192, 252)"></i>
+      Planify</RouterLink
+    >
 
     <div class="links">
       <RouterLink to="/">Home</RouterLink>

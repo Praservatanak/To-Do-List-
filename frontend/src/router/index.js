@@ -41,7 +41,7 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: '/user/:id',
+      path: '/user',
       name: 'UserView',
       component: userView,
       meta: { requiresAuth: true },

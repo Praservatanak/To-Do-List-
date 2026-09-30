@@ -1,0 +1,79 @@
+:root {
+  --primary: #4a63e7;
+  --primary-dark: #3a4fc4;
+  --primary-soft: #eef1ff;
+  --bg-top: #eaf0ff;
+  --bg-bottom: #f7faff;
+  --surface: #ffffff;
+  --border: #e4e9f7;
+  --text: #1b2340;
+  --muted: #5b6788;
+  --subtle: #8a90a8;
+  --success: #22b07d;
+  --success-soft: #e3f7ef;
+  --danger: #d64545;
+  --danger-soft: #fdecec;
+  --warning: #d98a1f;
+  --warning-soft: #fff4de;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 28px;
+
+  --shadow-sm: 0 2px 6px rgba(30, 40, 80, 0.06);
+  --shadow-md: 0 10px 28px rgba(30, 40, 80, 0.09);
+  --shadow-lg: 0 24px 60px rgba(30, 40, 80, 0.14);
+  --shadow-primary: 0 10px 24px rgba(74, 99, 231, 0.35);
+
+  --font: -apple-system, 'Segoe UI', system-ui, Roboto, 'Helvetica Neue', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font);
+  color: var(--text);
+  background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom)) fixed;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: var(--primary);
+}
+
+:focus-visible {
+  outline: 3px solid rgba(74, 99, 231, 0.45);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

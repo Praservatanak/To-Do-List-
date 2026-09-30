@@ -10,6 +10,20 @@ export const useAuthStore = defineStore('auth', {
     isLoggedIn: (state) => !!state.accessToken,
   },
   actions: {
+    async refresh() {
+      try {
+        const response = await api.post('/auth/refresh')
+
+        this.accessToken = response.data.accessToken
+        this.user = response.data.user
+
+        return response.data
+      } catch (err) {
+        this.accessToken = null
+        this.user = null
+        throw err
+      }
+    },
     async login(credentials) {
       try {
         const response = await api.post('/auth/login', credentials)

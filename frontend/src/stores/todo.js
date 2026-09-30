@@ -22,20 +22,19 @@ export const useTodoStore = defineStore('todo', {
         return state.todos
       }
     },
-    progressPercentage() {
-      if (this.totalCount === 0) return 0
-      return Math.round((this.completedTodo.length / this.totalCount) * 100)
-    },
   },
 
   actions: {
     setFilter(value) {
       this.filter = value
     },
+
     async fetchTodo() {
       try {
-        const response = await api.get('/todos')
-        this.todos = response.data.todos
+        const response = await api.get('/todos', {})
+
+        this.todos = response.data.data
+        s
         return response.data
       } catch (err) {
         this.error = err.response?.data?.message || 'Failed to fetch todos'

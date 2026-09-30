@@ -57,32 +57,52 @@ async function handleSave() {
   }
 }
 </script>
+
 <template>
-  <div class="overlay">
-    <div class="modal">
-      <h2>{{ mode === 'add' ? 'Add Todo' : mode === 'edit' ? 'Edit Todo' : 'View Todo' }}</h2>
+  <div class="overlay" @click.self="emit('close')" @keydown.esc="emit('close')">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <h2>{{ mode === 'add' ? 'Add todo' : mode === 'edit' ? 'Edit todo' : 'View todo' }}</h2>
+        <button class="close-x" aria-label="Close" @click="emit('close')">✕</button>
+      </div>
 
-      <label>Title</label>
-      <input v-model="formData.title" :disabled="mode === 'view'" />
+      <div class="field">
+        <label for="todo-title">Title</label>
+        <input
+          id="todo-title"
+          v-model="formData.title"
+          :disabled="mode === 'view'"
+          placeholder="What needs doing?"
+        />
+      </div>
 
-      <label>Due Date</label>
-      <input type="date" v-model="formData.dueDate" :disabled="mode === 'view'" />
+      <div class="row">
+        <div class="field">
+          <label for="todo-due">Due date</label>
+          <input id="todo-due" type="date" v-model="formData.dueDate" :disabled="mode === 'view'" />
+        </div>
 
-      <label>Priority</label>
-      <select v-model="formData.priorityLevel" :disabled="mode === 'view'">
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-      </select>
+        <div class="field">
+          <label for="todo-priority">Priority</label>
+          <select id="todo-priority" v-model="formData.priorityLevel" :disabled="mode === 'view'">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+      </div>
 
-      <span v-if="errorMessage" class="error">{{ errorMessage }}</span>
+      <div v-if="errorMessage" class="error" role="alert">{{ errorMessage }}</div>
 
       <div class="actions">
-        <button v-if="mode === 'edit' || mode === 'add'" @click="handleSave" :disabled="isSaving">
+        <button
+          v-if="mode === 'edit' || mode === 'add'"
+          class="save"
+          @click="handleSave"
+          :disabled="isSaving"
+        >
           {{ isSaving ? 'Saving...' : 'Save' }}
         </button>
-
-        <button class="ghost" @click="emit('close')">Close</button>
       </div>
     </div>
   </div>
@@ -92,68 +112,170 @@ async function handleSave() {
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(20, 25, 50, 0.4);
+  background: rgba(20, 25, 50, 0.45);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 16px;
   z-index: 50;
+  animation: fade 0.15s ease-out;
 }
 .modal {
-  background: white;
-  border-radius: 16px;
+  background: var(--surface);
+  border-radius: var(--radius-xl);
   padding: 28px;
   width: 100%;
-  max-width: 380px;
-  font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+  max-width: 440px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  animation: pop 0.2s ease-out;
 }
-.modal h2 {
-  margin: 0 0 18px;
-  font-size: 20px;
-  color: #1b2340;
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
 }
-.modal label {
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+.modal-head h2 {
+  margin: 0;
+  font-size: 22px;
+  letter-spacing: -0.4px;
+}
+.close-x {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: #f2f4fa;
+  color: var(--muted);
+  font-size: 14px;
+  transition: background 0.15s;
+}
+.close-x:hover {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.field {
+  margin-bottom: 16px;
+  flex: 1;
+  min-width: 0;
+}
+.row {
+  display: flex;
+  gap: 12px;
+}
+label {
   display: block;
   font-size: 13px;
   font-weight: 600;
-  color: #5b6788;
+  color: var(--muted);
   margin-bottom: 6px;
 }
-.modal input,
-.modal select {
+input,
+select {
   width: 100%;
-  padding: 10px 12px;
-  margin-bottom: 16px;
-  border: 1px solid #e4e9f7;
-  border-radius: 8px;
-  font-size: 14px;
+  padding: 11px 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  background: #f7faff;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s,
+    background 0.15s;
 }
-.modal input:disabled,
-.modal select:disabled {
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(74, 99, 231, 0.14);
+}
+input:disabled,
+select:disabled {
   background: #f2f4fa;
-  color: #8a90a8;
+  color: var(--subtle);
+  cursor: not-allowed;
 }
+
 .error {
-  color: #d64545;
+  background: var(--danger-soft);
+  color: var(--danger);
+  border: 1px solid #f6c9c9;
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
   font-size: 13px;
-  display: block;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
+
 .actions {
   display: flex;
+  justify-content: flex-end;
   gap: 10px;
+  margin-top: 8px;
 }
 .actions button {
-  flex: 1;
-  padding: 10px;
+  padding: 11px 22px;
   border: none;
-  border-radius: 8px;
+  border-radius: 999px;
+  font-size: 14px;
   font-weight: 700;
-  cursor: pointer;
-  background: #4a63e7;
-  color: white;
+  transition:
+    background 0.15s,
+    transform 0.15s;
 }
-.actions .ghost {
+.save {
+  background: var(--primary);
+  color: white;
+  box-shadow: var(--shadow-primary);
+}
+.save:hover:not(:disabled) {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+.save:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.ghost {
   background: #f2f4fa;
-  color: #1b2340;
+  color: var(--text);
+}
+.ghost:hover {
+  background: #e7ebf7;
+}
+
+@media (max-width: 480px) {
+  .overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .modal {
+    max-width: none;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    padding: 24px 20px 28px;
+  }
+  .row {
+    flex-direction: column;
+    gap: 0;
+  }
+  .actions button {
+    flex: 1;
+  }
 }
 </style>
