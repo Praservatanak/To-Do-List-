@@ -31,7 +31,7 @@ export const useTodoStore = defineStore('todo', {
 
     async fetchTodo() {
       try {
-        const response = await api.get('/todos', {})
+        const response = await api.get('/todos')
 
         this.todos = response.data.data
 
