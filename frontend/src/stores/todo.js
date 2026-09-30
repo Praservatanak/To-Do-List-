@@ -34,7 +34,7 @@ export const useTodoStore = defineStore('todo', {
         const response = await api.get('/todos', {})
 
         this.todos = response.data.data
-        s
+
         return response.data
       } catch (err) {
         this.error = err.response?.data?.message || 'Failed to fetch todos'
