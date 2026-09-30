@@ -43,8 +43,8 @@ export const login = asyncHandler(async (req, res) => {
   await user.save({ validateBeforeSave: false });
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    secure: true,
+    sameSite: "none",
     maxAge: 15 * 60 * 60 * 24 * 1000,
   });
   res.json({
@@ -74,8 +74,8 @@ export const register = asyncHandler(async (req, res) => {
 
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    secure: true,
+    sameSite: "none",
     maxAge: 15 * 60 * 60 * 24 * 1000,
   });
   res.json({
