@@ -51,7 +51,13 @@ async function handleSave() {
     }
     emit('close')
   } catch (err) {
-    errorMessage.value = JSON.stringify(err.response?.data) || err.message
+    const data = err.response?.data
+
+    if (data?.errors?.dueDate) {
+      errorMessage.value = data.errors.dueDate
+    } else {
+      errorMessage.value = data?.message || err.message
+    }
   } finally {
     isSaving.value = false
   }
